@@ -1,1 +1,4 @@
 rootProject.name = 'module-api'
+
+include 'module-common'
+include 'module-api'
