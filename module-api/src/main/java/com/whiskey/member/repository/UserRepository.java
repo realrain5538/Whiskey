@@ -1,7 +1,7 @@
-package member.repository;
+package com.whiskey.member.repository;
 
 import java.util.Optional;
-import member.domain.user.User;
+import com.whiskey.member.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {

@@ -1,10 +1,10 @@
-package member.service;
+package com.whiskey.member.service;
 
 import lombok.RequiredArgsConstructor;
-import member.domain.user.User;
-import member.domain.user.enums.UserStatus;
-import member.dto.UserRegisterValue;
-import member.repository.UserRepository;
+import com.whiskey.member.domain.user.User;
+import com.whiskey.member.domain.user.enums.UserStatus;
+import com.whiskey.member.dto.UserRegisterValue;
+import com.whiskey.member.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

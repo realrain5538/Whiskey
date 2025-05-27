@@ -1,4 +1,4 @@
-package member.dto;
+package com.whiskey.member.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

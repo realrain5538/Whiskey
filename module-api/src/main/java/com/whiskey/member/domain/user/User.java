@@ -1,4 +1,4 @@
-package member.domain.user;
+package com.whiskey.member.domain.user;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,8 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import member.domain.base.BaseEntity;
-import member.domain.user.enums.UserStatus;
+import com.whiskey.member.domain.base.BaseEntity;
+import com.whiskey.member.domain.user.enums.UserStatus;
 import org.springframework.data.annotation.CreatedDate;
 
 @Entity

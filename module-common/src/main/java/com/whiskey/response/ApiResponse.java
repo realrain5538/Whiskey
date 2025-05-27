@@ -1,4 +1,4 @@
-package response;
+package com.whiskey.response;
 
 public record ApiResponse<T>(
     boolean success,

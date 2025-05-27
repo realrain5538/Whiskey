@@ -1,16 +1,16 @@
-package member.controller;
+package com.whiskey.member.controller;
 
+import com.whiskey.member.dto.UserRegisterValue;
+import com.whiskey.member.service.UserService;
+import com.whiskey.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import member.dto.UserRegisterValue;
-import member.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import response.ApiResponse;
 
 @RestController
 @RequestMapping("/api/users")
