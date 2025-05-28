@@ -1,10 +1,11 @@
 package com.whiskey.member.service;
 
-import lombok.RequiredArgsConstructor;
-import com.whiskey.member.domain.user.User;
-import com.whiskey.member.domain.user.enums.UserStatus;
-import com.whiskey.member.dto.UserRegisterValue;
+import com.whiskey.member.domain.member.enums.MemberStatus;
+import com.whiskey.member.domain.member.member;
+import com.whiskey.member.dto.MemberRegisterValue;
 import com.whiskey.member.repository.UserRepository;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,17 +16,18 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public void signup(UserRegisterValue userDto) {
+    @Transactional
+    public void signup(MemberRegisterValue memberDto) {
         // 회원가입 약관동의 체크 확인
 
         // 중복가입 체크
 
-        String encryptPassword = passwordEncoder.encode(userDto.password());
-        User user = User.builder()
+        String encryptPassword = passwordEncoder.encode(memberDto.password());
+        member user = member.builder()
             .passwordHash(encryptPassword)
-            .userName(userDto.userName())
-            .email(userDto.email())
-            .isStatus(UserStatus.ACTIVE)
+            .memberName(memberDto.userName())
+            .email(memberDto.email())
+            .isStatus(MemberStatus.ACTIVE)
             .build();
 
         userRepository.save(user);

@@ -1,6 +1,6 @@
 package com.whiskey.member.controller;
 
-import com.whiskey.member.dto.UserRegisterValue;
+import com.whiskey.member.dto.MemberRegisterValue;
 import com.whiskey.member.service.UserService;
 import com.whiskey.response.ApiResponse;
 import jakarta.validation.Valid;
@@ -21,8 +21,8 @@ public class UserController {
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ApiResponse<Void> signup(@Valid @RequestBody UserRegisterValue userDto) {
-        userService.signup(userDto);
+    public ApiResponse<Void> signup(@Valid @RequestBody MemberRegisterValue memberDto) {
+        userService.signup(memberDto);
         return ApiResponse.success("회원가입에 성공하셨습니다.");
     }
 }

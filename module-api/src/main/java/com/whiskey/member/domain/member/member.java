@@ -1,4 +1,4 @@
-package com.whiskey.member.domain.user;
+package com.whiskey.member.domain.member;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,7 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import com.whiskey.member.domain.base.BaseEntity;
-import com.whiskey.member.domain.user.enums.UserStatus;
+import com.whiskey.member.domain.member.enums.MemberStatus;
 import org.springframework.data.annotation.CreatedDate;
 
 @Entity
@@ -18,12 +18,12 @@ import org.springframework.data.annotation.CreatedDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User extends BaseEntity {
+public class member extends BaseEntity {
     @Column(name = "password_hash")
     private String passwordHash;
 
-    @Column(name = "user_name")
-    private String userName;
+    @Column(name = "member_name")
+    private String memberName;
 
     @Column
     private String email;
@@ -36,7 +36,7 @@ public class User extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "is_status")
-    private UserStatus isStatus;
+    private MemberStatus isStatus;
 
     @CreatedDate
     @Column(nullable = false, name = "reg_date")
