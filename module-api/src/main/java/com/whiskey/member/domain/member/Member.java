@@ -15,10 +15,9 @@ import org.springframework.data.annotation.CreatedDate;
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class member extends BaseEntity {
+public class Member extends BaseEntity {
     @Column(name = "password_hash")
     private String passwordHash;
 
@@ -41,4 +40,12 @@ public class member extends BaseEntity {
     @CreatedDate
     @Column(nullable = false, name = "reg_date")
     private LocalDateTime regDate;
+
+    @Builder
+    public Member(String passwordHash, String memberName, String email, MemberStatus isStatus) {
+        this.passwordHash = passwordHash;
+        this.memberName = memberName;
+        this.email = email;
+        this.isStatus = isStatus;
+    }
 }

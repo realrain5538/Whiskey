@@ -1,7 +1,7 @@
 package com.whiskey.member.service;
 
 import com.whiskey.member.domain.member.enums.MemberStatus;
-import com.whiskey.member.domain.member.member;
+import com.whiskey.member.domain.member.Member;
 import com.whiskey.member.dto.MemberRegisterValue;
 import com.whiskey.member.repository.MemberRepository;
 import jakarta.transaction.Transactional;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MemberService {
 
-    private final MemberRepository userRepository;
+    private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
@@ -23,14 +23,14 @@ public class MemberService {
         // 중복가입 체크
 
         String encryptPassword = passwordEncoder.encode(memberDto.password());
-        member user = member.builder()
+        Member member = Member.builder()
             .passwordHash(encryptPassword)
-            .memberName(memberDto.userName())
+            .memberName(memberDto.memberName())
             .email(memberDto.email())
             .isStatus(MemberStatus.ACTIVE)
             .build();
 
-        userRepository.save(user);
+        memberRepository.save(member);
         
         // H2 활용하여 DB 저장확인
     }

@@ -9,6 +9,6 @@ public record MemberRegisterValue(
     @NotBlank
     String password,
     @NotBlank
-    String userName) {
+    String memberName) {
 
 }
