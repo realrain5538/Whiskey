@@ -1,7 +1,7 @@
 package com.whiskey.member.service;
 
-import com.whiskey.member.domain.member.enums.MemberStatus;
-import com.whiskey.member.domain.member.Member;
+import com.whiskey.domain.member.Member;
+import com.whiskey.domain.member.enums.MemberStatus;
 import com.whiskey.member.dto.MemberRegisterValue;
 import com.whiskey.member.repository.MemberRepository;
 import jakarta.transaction.Transactional;

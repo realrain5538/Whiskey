@@ -1,4 +1,4 @@
-package com.whiskey.member.domain.member.enums;
+package com.whiskey.domain.member.enums;
 
 public enum MemberStatus {
     ACTIVE("활성 계정"),

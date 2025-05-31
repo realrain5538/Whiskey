@@ -1,5 +1,7 @@
-package com.whiskey.member.domain.member;
+package com.whiskey.domain.member;
 
+import com.whiskey.domain.member.com.whiskey.domain.base.BaseEntity;
+import com.whiskey.domain.member.enums.MemberStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -9,8 +11,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import com.whiskey.member.domain.base.BaseEntity;
-import com.whiskey.member.domain.member.enums.MemberStatus;
 import org.springframework.data.annotation.CreatedDate;
 
 @Entity
