@@ -6,4 +6,8 @@ public record ApiResponse<T>(
         public static <T> ApiResponse<T> success(String message) {
             return new ApiResponse<>(true, message);
         }
+
+        public static <T> ApiResponse<T> success(String code, String message) {
+            return new ApiResponse<>(true, message);
+        }
 }
