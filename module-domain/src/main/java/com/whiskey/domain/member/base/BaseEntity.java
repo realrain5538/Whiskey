@@ -1,4 +1,4 @@
-package com.whiskey.domain.member.com.whiskey.domain.base;
+package com.whiskey.domain.member.base;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
@@ -16,7 +16,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 public abstract class BaseEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
@@ -27,5 +26,5 @@ public abstract class BaseEntity {
 
     @LastModifiedDate
     @Column(nullable = false)
-    private LocalDateTime updatedAt;
+    private LocalDateTime updateAt;
 }
