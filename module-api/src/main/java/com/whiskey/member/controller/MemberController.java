@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/members")
 @RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService userService;
 
     @PostMapping("/signup")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     public ApiResponse<Void> signup(@Valid @RequestBody MemberRegisterValue memberDto) {
         userService.signup(memberDto);
         return ApiResponse.success("회원가입에 성공하셨습니다.");
