@@ -18,15 +18,15 @@ public class CommonException extends RuntimeException {
         this.data = data;
     }
 
-    public CommonErrorCode errorCode() {
+    public CommonErrorCode getErrorCode() {
         return errorCode;
     }
 
-    public Object data() {
+    public Object getData() {
         return data;
     }
 
-    public HttpStatus httpStatus() {
+    public HttpStatus getHttpStatus() {
         return errorCode.getHttpStatus();
     }
 }

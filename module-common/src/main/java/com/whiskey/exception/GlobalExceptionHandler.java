@@ -2,7 +2,7 @@ package com.whiskey.exception;
 
 import static org.springframework.http.ResponseEntity.*;
 
-import com.whiskey.response.ApiErrorResponse;
+import com.whiskey.response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(CommonException.class)
-    public ResponseEntity<ApiErrorResponse> commonException(CommonException exception) {
-        HttpStatus status = exception.errorCode().getHttpStatus();
-        String responseCode = exception.errorCode().name();
+    public ResponseEntity<ApiResponse> commonException(CommonException exception) {
+        HttpStatus status = exception.getErrorCode().getHttpStatus();
+        String responseCode = exception.getErrorCode().name();
 
-        ApiErrorResponse response = ApiErrorResponse.failure(responseCode, exception.getMessage(), exception.data());
+        ApiResponse response = ApiResponse.failure(responseCode, exception.getMessage(), exception.getData());
 
         return status(status).body(response);
     }
