@@ -1,0 +1,4 @@
+jwt:
+  secret-key: 0VFd9UZwXwLVaX40nCLLGuqyx6tcWzGz+KGHpDz9G+xTVOfNLlqbh4YqfKbzzKDQl94OCqP1MLm6dNuLJdY8qg==
+  access-token-expiry: 3600000  # 1시간
+  refresh-token-expiry: 86400000  # 24시간

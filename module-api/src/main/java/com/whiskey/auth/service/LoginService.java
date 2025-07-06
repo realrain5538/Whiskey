@@ -5,7 +5,7 @@ import com.whiskey.domain.login.LoginToken;
 import com.whiskey.domain.login.RefreshTokenCookie;
 import com.whiskey.domain.member.enums.MemberRole;
 import com.whiskey.security.jwt.JwtProperties;
-import com.whiskey.security.jwt.JwtProvider;
+import com.whiskey.security.jwt.JwtTokenProvider;
 import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class LoginService {
     private final JwtProperties jwtProperties;
-    private final JwtProvider jwtProvider;
+    private final JwtTokenProvider jwtProvider;
 
     public static final String REFRESH_COOKIE_NAME = "refreshToken";
     private static final String REFRESH_TOKEN_PREFIX = "refresh_token:";
