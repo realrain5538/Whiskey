@@ -1,20 +1,14 @@
 package com.whiskey.auth.controller;
 
 import com.whiskey.auth.dto.LoginRequest;
-import com.whiskey.auth.service.AuthService;
-import com.whiskey.domain.login.AccessTokenHeader;
-import com.whiskey.domain.login.LoginToken;
-import com.whiskey.domain.login.RefreshTokenCookie;
+import com.whiskey.domain.auth.JwtResponse;
+import com.whiskey.member.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,10 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final AuthService authService;
+    private final MemberService memberService;
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@Valid @RequestBody LoginRequest loginRequest) {
-
+    public ResponseEntity<JwtResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
+        JwtResponse response = memberService.login(loginRequest);
+        return ResponseEntity.ok(response);
     }
 }
