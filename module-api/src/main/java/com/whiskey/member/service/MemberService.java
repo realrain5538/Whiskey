@@ -2,6 +2,7 @@ package com.whiskey.member.service;
 
 import com.whiskey.auth.dto.LoginRequest;
 import com.whiskey.domain.auth.JwtResponse;
+import com.whiskey.domain.auth.MemberInfo;
 import com.whiskey.domain.member.Member;
 import com.whiskey.domain.member.enums.MemberStatus;
 import com.whiskey.dto.ValidationErrorValue;
@@ -60,8 +61,6 @@ public class MemberService {
     }
 
     public JwtResponse login(@Valid LoginRequest loginRequest) {
-        log.debug("=== Login 시작: {} ===", loginRequest.email());
-
         try {
             Member member = authenticateMember(loginRequest.email(), loginRequest.password());
 
@@ -72,11 +71,12 @@ public class MemberService {
             String accessToken = jwtTokenProvider.generateToken(member.getId(), authorities);
             String refreshToken = jwtTokenProvider.generateRefreshToken(member.getId());
 
-            log.debug("=== Login 성공: {} ===", loginRequest.email());
-            return new JwtResponse(accessToken, refreshToken);
+            Long expireTime = jwtTokenProvider.getAccessTokenValidityTime();
+            MemberInfo memberInfo = MemberInfo.from(member);
+
+            return new JwtResponse(accessToken, refreshToken, "Bearer", expireTime, memberInfo);
         }
         catch(Exception e) {
-            log.error("Login 실패: {}", loginRequest.email(), e);
             throw ErrorCode.UNAUTHORIZED.exception("인증에 실패했습니다.");
         }
     }

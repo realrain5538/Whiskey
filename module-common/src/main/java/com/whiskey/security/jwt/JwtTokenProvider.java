@@ -98,4 +98,8 @@ public class JwtTokenProvider {
             return false;
         }
     }
+
+    public Long getAccessTokenValidityTime() {
+        return jwtProperties.getAccessTokenValidity();
+    }
 }
