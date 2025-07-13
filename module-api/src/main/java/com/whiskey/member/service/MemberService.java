@@ -8,6 +8,7 @@ import com.whiskey.domain.member.enums.MemberStatus;
 import com.whiskey.dto.ValidationErrorValue;
 import com.whiskey.exception.ErrorCode;
 import com.whiskey.member.dto.MemberRegisterValue;
+import com.whiskey.member.dto.MemberResponse;
 import com.whiskey.member.repository.MemberRepository;
 import com.whiskey.security.jwt.JwtTokenProvider;
 import jakarta.transaction.Transactional;
@@ -94,5 +95,10 @@ public class MemberService {
         }
 
         return member;
+    }
+
+    public MemberResponse getMemberById(Long id) {
+        Member member = memberRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+        return MemberResponse.from(member);
     }
 }
