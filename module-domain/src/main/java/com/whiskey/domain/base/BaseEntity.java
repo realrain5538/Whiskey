@@ -1,4 +1,4 @@
-package com.whiskey.domain.member.base;
+package com.whiskey.domain.base;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
