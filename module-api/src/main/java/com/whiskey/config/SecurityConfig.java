@@ -28,6 +28,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(
             authorize -> authorize
                 .requestMatchers(HttpMethod.POST, "/api/members").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/auth/token/refresh").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/members/{id}").hasRole("USER")
                 .requestMatchers("/api/auth/login").permitAll()
                 .anyRequest().authenticated()

@@ -1,6 +1,8 @@
 package com.whiskey.security.jwt;
 
+import com.whiskey.exception.ErrorCode;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -14,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.crypto.SecretKey;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,6 +27,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class JwtTokenProvider {
     private final JwtProperties jwtProperties;
     private SecretKey secretKey;
@@ -99,7 +103,32 @@ public class JwtTokenProvider {
         }
     }
 
+    public Claims parseClaims(String refreshToken) {
+        try {
+            return Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(refreshToken)
+                .getBody();
+        }
+        catch (ExpiredJwtException e) {
+            return e.getClaims();
+        }
+        catch(JwtException e) {
+            throw ErrorCode.UNAUTHORIZED.exception("유효하지 않은 JWT입니다.");
+        }
+    }
+
     public Long getAccessTokenValidityTime() {
         return jwtProperties.getAccessTokenValidity();
+    }
+
+    public Long getRefreshTokenValidityTime() {
+        return jwtProperties.getRefreshTokenValidity();
+    }
+
+    public Long getMemberIdFromRefreshToken(String refreshToken) {
+        Claims claims = parseClaims(refreshToken);
+        return Long.parseLong(claims.getSubject());
     }
 }

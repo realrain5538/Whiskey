@@ -1,8 +1,11 @@
 package com.whiskey.auth.service;
 
 import com.whiskey.auth.dto.LoginRequest;
+import com.whiskey.auth.dto.TokenRefreshResponse;
+import com.whiskey.auth.repository.RefreshTokenRepository;
 import com.whiskey.domain.auth.JwtResponse;
 import com.whiskey.domain.auth.MemberInfo;
+import com.whiskey.domain.auth.RefreshToken;
 import com.whiskey.domain.member.Member;
 import com.whiskey.domain.member.enums.MemberStatus;
 import com.whiskey.exception.ErrorCode;
@@ -10,7 +13,10 @@ import com.whiskey.member.repository.MemberRepository;
 import com.whiskey.security.jwt.JwtTokenProvider;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -26,6 +32,7 @@ public class AuthService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     public JwtResponse login(@Valid LoginRequest loginRequest) {
         try {
@@ -40,6 +47,12 @@ public class AuthService {
 
             Long expireTime = jwtTokenProvider.getAccessTokenValidityTime();
             MemberInfo memberInfo = MemberInfo.from(member);
+
+            checkRefreshToken(
+                member.getId(),
+                refreshToken,
+                jwtTokenProvider.getRefreshTokenValidityTime()
+            );
 
             return new JwtResponse(accessToken, refreshToken, "Bearer", expireTime, memberInfo);
         }
@@ -61,5 +74,53 @@ public class AuthService {
         }
 
         return member;
+    }
+
+    public void checkRefreshToken(Long memberId, String refreshToken, Long expireTime) {
+        LocalDateTime expiry = LocalDateTime.now().plus(Duration.ofMillis(expireTime));
+
+        refreshTokenRepository.findByMemberId(memberId)
+            .ifPresentOrElse(
+                existing -> existing.updateToken(refreshToken, expiry),
+                () -> refreshTokenRepository.save(new RefreshToken(memberId, refreshToken, expiry)
+            )
+        );
+    }
+
+    public boolean isValid(Long memberId, String token) {
+        Optional<RefreshToken> returnToken = refreshTokenRepository.findByMemberId(memberId);
+
+        if(returnToken.isPresent()) {
+            RefreshToken refreshToken = returnToken.get();
+
+            boolean isMatches = refreshToken.getRefreshToken().equals(token);
+            boolean notExpired = refreshToken.getExpiryAt().isAfter(LocalDateTime.now());
+
+            return isMatches && notExpired;
+        }
+
+        return false;
+    }
+
+    public TokenRefreshResponse refreshAccessToken(String refreshToken) {
+        Long memberId = jwtTokenProvider.getMemberIdFromRefreshToken(refreshToken);
+
+        boolean isValid = isValid(memberId, refreshToken);
+        if(!isValid) {
+            throw ErrorCode.UNAUTHORIZED.exception("Refresh token이 유효하지 않습니다.");
+        }
+
+        List<SimpleGrantedAuthority> authorities = List.of(
+            new SimpleGrantedAuthority("ROLE_USER")
+        );
+
+        String newAccessToken = jwtTokenProvider.generateToken(memberId, authorities);
+
+        return new TokenRefreshResponse(
+            newAccessToken,
+            refreshToken,
+            "Bearer",
+            jwtTokenProvider.getAccessTokenValidityTime()
+        );
     }
 }
