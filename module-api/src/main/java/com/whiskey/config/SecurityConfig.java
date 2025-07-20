@@ -23,11 +23,12 @@ public class SecurityConfig {
             authorize -> authorize
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers("/api/members").permitAll()
+                .requestMatchers("/api/admin/whiskey").permitAll()
                 .anyRequest().authenticated()
             )
             .headers(headers -> headers
                 .frameOptions(frame -> frame.sameOrigin())  // H2 콘솔을 위한 iframe 허용
-            );;
+            );
 
         return http.build();
     }
