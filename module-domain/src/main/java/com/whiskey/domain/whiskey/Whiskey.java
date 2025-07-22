@@ -2,6 +2,7 @@ package com.whiskey.domain.whiskey;
 
 import com.whiskey.domain.base.BaseEntity;
 import com.whiskey.domain.whiskey.enums.MaltType;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -45,7 +46,7 @@ public class Whiskey extends BaseEntity {
     @Column(name = "image_path")
     private String imagePath;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "whiskey_id")
     private List<Cask> casks = new ArrayList<>();
 

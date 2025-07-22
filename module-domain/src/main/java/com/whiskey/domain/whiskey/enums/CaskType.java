@@ -6,7 +6,8 @@ import lombok.Getter;
 public enum CaskType {
     SHERRY("SHERRY"),
     PORT("PORT"),
-    BOURBON("BOURBON");
+    BOURBON("BOURBON"),
+    RUM("RUM");
 
     private final String value;
 
