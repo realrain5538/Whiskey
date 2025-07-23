@@ -24,6 +24,7 @@ public class SecurityConfig {
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers("/api/members").permitAll()
                 .requestMatchers("/api/admin/whiskey").permitAll()
+                .requestMatchers("/api/admin/whiskey/**").permitAll()
                 .anyRequest().authenticated()
             )
             .headers(headers -> headers

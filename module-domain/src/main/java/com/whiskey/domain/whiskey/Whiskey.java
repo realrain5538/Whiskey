@@ -60,4 +60,40 @@ public class Whiskey extends BaseEntity {
         this.abv = abv;
         this.description = description;
     }
+
+    public void setDistillery(String distillery) {
+        this.distillery = distillery;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setMaltType(MaltType maltType) {
+        this.maltType = maltType;
+    }
+
+    public void setAbv(double abv) {
+        this.abv = abv;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public void setCasks(List<Cask> casks) {
+        this.casks = casks;
+    }
 }

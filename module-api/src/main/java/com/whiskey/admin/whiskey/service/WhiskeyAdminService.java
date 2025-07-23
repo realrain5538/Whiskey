@@ -8,6 +8,7 @@ import com.whiskey.domain.whiskey.Whiskey;
 import com.whiskey.domain.whiskey.enums.CaskType;
 import com.whiskey.exception.ErrorCode;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +49,30 @@ public class WhiskeyAdminService {
 
         if(count > 0) {
             throw ErrorCode.CONFLICT.exception("이미 등록된 위스키입니다.");
+        }
+    }
+
+    @Transactional
+    public void update(Long id, @Valid WhiskeyRegisterValue whiskeyDto) {
+        Whiskey whiskey = whiskeyRepository.findById(id).orElseThrow(() -> ErrorCode.NOT_FOUND.exception("위스키를 찾을 수 없습니다."));
+
+        whiskey.setDistillery(whiskeyDto.distillery());
+        whiskey.setName(whiskeyDto.name());
+        whiskey.setCountry(whiskeyDto.country());
+        whiskey.setAge(whiskeyDto.age());
+        whiskey.setMaltType(whiskeyDto.maltType());
+        whiskey.setAbv(whiskeyDto.abv());
+        whiskey.setDescription(whiskeyDto.description());
+
+        List<CaskRegisterValue> casks = whiskeyDto.casks() != null ? whiskeyDto.casks() : Collections.emptyList();
+        if(!casks.isEmpty()) {
+            whiskey.getCasks().clear();
+
+            for(CaskRegisterValue caskDto : casks) {
+                Cask cask = new Cask();
+                cask.setType(CaskType.valueOf(caskDto.type()));
+                whiskey.getCasks().add(cask);
+            }
         }
     }
 }
