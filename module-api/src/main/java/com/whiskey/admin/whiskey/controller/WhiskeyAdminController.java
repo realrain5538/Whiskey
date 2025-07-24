@@ -1,11 +1,17 @@
 package com.whiskey.admin.whiskey.controller;
 
 import com.whiskey.admin.whiskey.dto.WhiskeyRegisterValue;
+import com.whiskey.admin.whiskey.dto.WhiskeyResponse;
+import com.whiskey.admin.whiskey.dto.WhiskeySearchValue;
 import com.whiskey.admin.whiskey.service.WhiskeyAdminService;
 import com.whiskey.response.ApiResponse;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -32,5 +38,23 @@ public class WhiskeyAdminController {
     public ApiResponse<Void> update(@PathVariable("id") Long id, @Valid @RequestBody WhiskeyRegisterValue whiskeyDto) {
         whiskeyService.update(id, whiskeyDto);
         return ApiResponse.success("위스키 정보가 수정되었습니다.");
+    }
+
+    @DeleteMapping("/whiskey/{id}")
+    public ApiResponse<Void> delete(@PathVariable("id") Long id) {
+        whiskeyService.delete(id);
+        return ApiResponse.success("위스키 정보가 삭제되었습니다.");
+    }
+
+    @GetMapping("/whiskey/{id}")
+    public ResponseEntity<WhiskeyResponse> get(@PathVariable("id") Long id) {
+        WhiskeyResponse whiskey = whiskeyService.findById(id);
+        return ResponseEntity.ok(whiskey);
+    }
+
+    @GetMapping("/whiskey")
+    public ResponseEntity<List<WhiskeyResponse>> list(@Valid @RequestBody WhiskeySearchValue whiskeyDto) {
+        List<WhiskeyResponse> whiskeys = whiskeyService.find(whiskeyDto);
+        return ResponseEntity.ok(whiskeys);
     }
 }

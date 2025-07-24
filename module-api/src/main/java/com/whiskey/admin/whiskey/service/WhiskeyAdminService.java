@@ -2,6 +2,8 @@ package com.whiskey.admin.whiskey.service;
 
 import com.whiskey.admin.whiskey.dto.CaskRegisterValue;
 import com.whiskey.admin.whiskey.dto.WhiskeyRegisterValue;
+import com.whiskey.admin.whiskey.dto.WhiskeyResponse;
+import com.whiskey.admin.whiskey.dto.WhiskeySearchValue;
 import com.whiskey.admin.whiskey.repository.WhiskeyAdminRepository;
 import com.whiskey.domain.whiskey.Cask;
 import com.whiskey.domain.whiskey.Whiskey;
@@ -74,5 +76,20 @@ public class WhiskeyAdminService {
                 whiskey.getCasks().add(cask);
             }
         }
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        whiskeyRepository.deleteById(id);
+    }
+
+    public WhiskeyResponse findById(Long id) {
+        Whiskey whiskey = whiskeyRepository.findById(id).orElseThrow(() -> ErrorCode.NOT_FOUND.exception("위스키를 찾을 수 없습니다."));
+        return WhiskeyResponse.from(whiskey);
+    }
+
+    public List<WhiskeyResponse> find(@Valid WhiskeySearchValue whiskeyDto) {
+        // 동적 쿼리 추가
+        return null;
     }
 }
