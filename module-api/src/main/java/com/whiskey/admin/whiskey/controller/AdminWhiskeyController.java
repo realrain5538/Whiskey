@@ -3,13 +3,13 @@ package com.whiskey.admin.whiskey.controller;
 import com.whiskey.admin.whiskey.dto.WhiskeyRegisterValue;
 import com.whiskey.admin.whiskey.dto.WhiskeyResponse;
 import com.whiskey.admin.whiskey.dto.WhiskeySearchValue;
-import com.whiskey.admin.whiskey.service.WhiskeyAdminService;
+import com.whiskey.admin.whiskey.service.AdminWhiskeyService;
 import com.whiskey.response.ApiResponse;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,9 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
 @Slf4j
-public class WhiskeyAdminController {
+public class AdminWhiskeyController {
 
-    private final WhiskeyAdminService whiskeyService;
+    private final AdminWhiskeyService whiskeyService;
 
 //    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/whiskey")
@@ -41,7 +41,7 @@ public class WhiskeyAdminController {
     }
 
     @DeleteMapping("/whiskey/{id}")
-    public ApiResponse<Void> delete(@PathVariable("id") Long id) {
+    public ApiResponse<Void> delete(@PathVariable("id") @NotNull Long id) {
         whiskeyService.delete(id);
         return ApiResponse.success("위스키 정보가 삭제되었습니다.");
     }

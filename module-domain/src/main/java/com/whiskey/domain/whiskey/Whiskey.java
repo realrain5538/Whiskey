@@ -96,4 +96,10 @@ public class Whiskey extends BaseEntity {
     public void setCasks(List<Cask> casks) {
         this.casks = casks;
     }
+
+    public void addCasks(List<Cask> casks) {
+        if(casks != null && !casks.isEmpty()) {
+            this.casks.addAll(casks);
+        }
+    }
 }

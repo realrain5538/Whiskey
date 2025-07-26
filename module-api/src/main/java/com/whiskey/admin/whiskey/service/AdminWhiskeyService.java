@@ -4,13 +4,13 @@ import com.whiskey.admin.whiskey.dto.CaskRegisterValue;
 import com.whiskey.admin.whiskey.dto.WhiskeyRegisterValue;
 import com.whiskey.admin.whiskey.dto.WhiskeyResponse;
 import com.whiskey.admin.whiskey.dto.WhiskeySearchValue;
-import com.whiskey.admin.whiskey.repository.WhiskeyAdminRepository;
+import com.whiskey.admin.whiskey.repository.AdminWhiskeyRepository;
 import com.whiskey.domain.whiskey.Cask;
 import com.whiskey.domain.whiskey.Whiskey;
-import com.whiskey.domain.whiskey.enums.CaskType;
 import com.whiskey.exception.ErrorCode;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +18,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class WhiskeyAdminService {
+public class AdminWhiskeyService {
 
-    private final WhiskeyAdminRepository whiskeyRepository;
+    private final AdminWhiskeyRepository whiskeyRepository;
 
     @Transactional
     public void register(WhiskeyRegisterValue whiskeyDto) {
@@ -36,13 +36,15 @@ public class WhiskeyAdminService {
             .description(whiskeyDto.description())
             .build();
 
-        List<CaskRegisterValue> casks = whiskeyDto.casks() != null ? whiskeyDto.casks() : Collections.emptyList();
-        for(CaskRegisterValue caskDto : casks) {
+        List<Cask> casks = new ArrayList<>();
+        List<CaskRegisterValue> caskValue = whiskeyDto.casks() != null ? whiskeyDto.casks() : Collections.emptyList();
+        for(CaskRegisterValue caskDto : caskValue) {
             Cask cask = new Cask();
-            cask.setType(CaskType.valueOf(caskDto.type()));
-            whiskey.getCasks().add(cask);
+            cask.setType(caskDto.caskType());
+            casks.add(cask);
         }
 
+        whiskey.addCasks(casks);
         whiskeyRepository.save(whiskey);
     }
 
@@ -72,7 +74,7 @@ public class WhiskeyAdminService {
 
             for(CaskRegisterValue caskDto : casks) {
                 Cask cask = new Cask();
-                cask.setType(CaskType.valueOf(caskDto.type()));
+                cask.setType(caskDto.caskType());
                 whiskey.getCasks().add(cask);
             }
         }
@@ -80,6 +82,10 @@ public class WhiskeyAdminService {
 
     @Transactional
     public void delete(Long id) {
+        if(!whiskeyRepository.existsById(id)) {
+            throw ErrorCode.NOT_FOUND.exception("해당 위스키가 존재하지 않습니다.");
+        }
+
         whiskeyRepository.deleteById(id);
     }
 
