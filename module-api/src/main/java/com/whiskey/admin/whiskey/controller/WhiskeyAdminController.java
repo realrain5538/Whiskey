@@ -47,14 +47,14 @@ public class WhiskeyAdminController {
     }
 
     @GetMapping("/whiskey/{id}")
-    public ResponseEntity<WhiskeyResponse> get(@PathVariable("id") Long id) {
+    public ApiResponse<WhiskeyResponse> get(@PathVariable("id") Long id) {
         WhiskeyResponse whiskey = whiskeyService.findById(id);
-        return ResponseEntity.ok(whiskey);
+        return ApiResponse.success("위스키를 조회하였습니다.", whiskey);
     }
 
     @GetMapping("/whiskey")
-    public ResponseEntity<List<WhiskeyResponse>> list(@Valid @RequestBody WhiskeySearchValue whiskeyDto) {
+    public ApiResponse<List<WhiskeyResponse>> list(@Valid @RequestBody WhiskeySearchValue whiskeyDto) {
         List<WhiskeyResponse> whiskeys = whiskeyService.find(whiskeyDto);
-        return ResponseEntity.ok(whiskeys);
+        return ApiResponse.success("위스키 목록을 조회하였습니다.", whiskeys);
     }
 }
