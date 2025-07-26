@@ -1,6 +1,6 @@
 package com.whiskey.domain.member;
 
-import com.whiskey.domain.member.base.BaseEntity;
+import com.whiskey.domain.base.BaseEntity;
 import com.whiskey.domain.member.enums.MemberStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
