@@ -1,21 +1,30 @@
 package com.whiskey.member.service;
 
+import com.whiskey.auth.dto.LoginRequest;
+import com.whiskey.domain.auth.JwtResponse;
+import com.whiskey.domain.auth.MemberInfo;
 import com.whiskey.domain.member.Member;
 import com.whiskey.domain.member.enums.MemberStatus;
 import com.whiskey.dto.ValidationErrorValue;
 import com.whiskey.exception.ErrorCode;
-import com.whiskey.exception.BusinessException;
 import com.whiskey.member.dto.MemberRegisterValue;
+import com.whiskey.member.dto.MemberResponse;
 import com.whiskey.member.repository.MemberRepository;
+import com.whiskey.security.jwt.JwtTokenProvider;
 import jakarta.transaction.Transactional;
-import java.util.Map;
+import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
+@Slf4j
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -49,5 +58,10 @@ public class MemberService {
             ValidationErrorValue errorValue = new ValidationErrorValue("email", email, "duplicate");
             throw ErrorCode.CONFLICT.exception("이미 가입된 이메일입니다.", errorValue);
         }
+    }
+
+    public MemberResponse getMemberById(Long id) {
+        Member member = memberRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+        return MemberResponse.from(member);
     }
 }
