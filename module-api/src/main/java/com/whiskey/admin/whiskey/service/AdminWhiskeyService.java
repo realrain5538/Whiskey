@@ -14,10 +14,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AdminWhiskeyService {
 
     private final AdminWhiskeyRepository whiskeyRepository;
@@ -58,6 +60,8 @@ public class AdminWhiskeyService {
 
     @Transactional
     public void update(Long id, @Valid WhiskeyRegisterValue whiskeyDto) {
+        checkDuplicate(whiskeyDto);
+
         Whiskey whiskey = whiskeyRepository.findById(id).orElseThrow(() -> ErrorCode.NOT_FOUND.exception("위스키를 찾을 수 없습니다."));
 
         whiskey.setDistillery(whiskeyDto.distillery());
@@ -94,8 +98,8 @@ public class AdminWhiskeyService {
         return WhiskeyResponse.from(whiskey);
     }
 
-    public List<WhiskeyResponse> find(@Valid WhiskeySearchValue whiskeyDto) {
-        // 동적 쿼리 추가
+    public List<WhiskeyResponse> findWhiskeys(@Valid WhiskeySearchValue whiskeyDto) {
+        List<Whiskey> whiskeys = whiskeyRepository.findWhiskeys(whiskeyDto);
         return null;
     }
 }
