@@ -6,9 +6,9 @@ public record WhiskeySearchValue(
     String distillery,
     String name,
     String country,
-    int age,
+    Integer age,
     MaltType maltType,
-    double abv,
+    Double abv,
     String description
     ) {
 }

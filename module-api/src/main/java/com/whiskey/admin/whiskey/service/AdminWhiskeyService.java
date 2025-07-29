@@ -98,8 +98,8 @@ public class AdminWhiskeyService {
         return WhiskeyResponse.from(whiskey);
     }
 
-    public List<WhiskeyResponse> findWhiskeys(@Valid WhiskeySearchValue whiskeyDto) {
-        List<Whiskey> whiskeys = whiskeyRepository.findWhiskeys(whiskeyDto);
-        return null;
+    public List<WhiskeyResponse> searchWhiskeys(@Valid WhiskeySearchValue whiskeyDto) {
+        List<Whiskey> whiskeys = whiskeyRepository.searchWhiskeys(whiskeyDto);
+        return WhiskeyResponse.from(whiskeys);
     }
 }

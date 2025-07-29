@@ -1,9 +1,7 @@
 package com.whiskey.admin.whiskey.repository;
 
-import com.whiskey.admin.whiskey.dto.WhiskeySearchValue;
 import com.whiskey.domain.whiskey.Whiskey;
 import com.whiskey.domain.whiskey.enums.MaltType;
-import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

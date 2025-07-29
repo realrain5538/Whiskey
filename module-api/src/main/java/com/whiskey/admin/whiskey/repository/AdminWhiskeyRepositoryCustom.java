@@ -5,5 +5,5 @@ import com.whiskey.domain.whiskey.Whiskey;
 import java.util.List;
 
 public interface AdminWhiskeyRepositoryCustom {
-    List<Whiskey> findWhiskeys(WhiskeySearchValue whiskeyDto);
+    List<Whiskey> searchWhiskeys(WhiskeySearchValue whiskeyDto);
 }
