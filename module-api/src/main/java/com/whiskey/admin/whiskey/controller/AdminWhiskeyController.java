@@ -54,7 +54,6 @@ public class AdminWhiskeyController {
 
     @GetMapping("/whiskey")
     public ApiResponse<List<WhiskeyResponse>> list(@Valid WhiskeySearchValue whiskeyDto) {
-        log.info("==============================================================");
         List<WhiskeyResponse> whiskeys = whiskeyService.searchWhiskeys(whiskeyDto);
         return ApiResponse.success("위스키 목록을 조회하였습니다.", whiskeys);
     }

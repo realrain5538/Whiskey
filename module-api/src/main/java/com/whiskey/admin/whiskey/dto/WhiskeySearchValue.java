@@ -9,6 +9,7 @@ public record WhiskeySearchValue(
     Integer age,
     MaltType maltType,
     Double abv,
+    Integer volume,
     String description
     ) {
 }

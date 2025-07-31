@@ -35,6 +35,7 @@ public class AdminWhiskeyService {
             .age(whiskeyDto.age())
             .maltType(whiskeyDto.maltType())
             .abv(whiskeyDto.abv())
+            .volume(whiskeyDto.volume())
             .description(whiskeyDto.description())
             .build();
 
@@ -51,7 +52,7 @@ public class AdminWhiskeyService {
     }
 
     private void checkDuplicate(WhiskeyRegisterValue whiskeyDto) {
-        int count = whiskeyRepository.checkDuplicateWhiskey(whiskeyDto.distillery(), whiskeyDto.name(), whiskeyDto.age(), whiskeyDto.maltType(), whiskeyDto.abv());
+        int count = whiskeyRepository.checkDuplicateWhiskey(whiskeyDto.distillery(), whiskeyDto.name(), whiskeyDto.age(), whiskeyDto.maltType(), whiskeyDto.abv(), whiskeyDto.volume());
 
         if(count > 0) {
             throw ErrorCode.CONFLICT.exception("이미 등록된 위스키입니다.");
@@ -70,6 +71,7 @@ public class AdminWhiskeyService {
         whiskey.setAge(whiskeyDto.age());
         whiskey.setMaltType(whiskeyDto.maltType());
         whiskey.setAbv(whiskeyDto.abv());
+        whiskey.setVolume(whiskeyDto.volume());
         whiskey.setDescription(whiskeyDto.description());
 
         List<CaskRegisterValue> casks = whiskeyDto.casks() != null ? whiskeyDto.casks() : Collections.emptyList();

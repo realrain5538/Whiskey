@@ -29,7 +29,8 @@ public class AdminWhiskeyRepositoryImpl implements AdminWhiskeyRepositoryCustom 
                 nameContains(whiskeyDto.name()),
                 countryContains(whiskeyDto.country()),
                 ageEquals(whiskeyDto.age()),
-                maltTypeEquals(whiskeyDto.maltType())
+                maltTypeEquals(whiskeyDto.maltType()),
+                volumeEquals(whiskeyDto.volume())
             ).fetch();
     }
 
@@ -51,5 +52,9 @@ public class AdminWhiskeyRepositoryImpl implements AdminWhiskeyRepositoryCustom 
 
     private BooleanExpression maltTypeEquals(Enum<?> maltType) {
         return maltType != null ? QWhiskey.whiskey.maltType.eq((MaltType) maltType) : null;
+    }
+
+    private BooleanExpression volumeEquals(Integer volume) {
+        return volume != null ? QWhiskey.whiskey.volume.eq(volume) : null;
     }
 }

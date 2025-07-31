@@ -15,9 +15,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Whiskey extends BaseEntity {
@@ -41,6 +43,9 @@ public class Whiskey extends BaseEntity {
     private double abv;
 
     @Column
+    private int volume;
+
+    @Column
     private String description;
 
     @Column(name = "image_path")
@@ -51,50 +56,15 @@ public class Whiskey extends BaseEntity {
     private List<Cask> casks = new ArrayList<>();
 
     @Builder
-    public Whiskey(String distillery, String name, String country, int age, MaltType maltType, double abv, String description) {
+    public Whiskey(String distillery, String name, String country, int age, int volume, MaltType maltType, double abv, String description) {
         this.distillery = distillery;
         this.name = name;
         this.country = country;
         this.age = age;
         this.maltType = maltType;
         this.abv = abv;
+        this.volume = volume;
         this.description = description;
-    }
-
-    public void setDistillery(String distillery) {
-        this.distillery = distillery;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public void setMaltType(MaltType maltType) {
-        this.maltType = maltType;
-    }
-
-    public void setAbv(double abv) {
-        this.abv = abv;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
-
-    public void setCasks(List<Cask> casks) {
-        this.casks = casks;
     }
 
     public void addCasks(List<Cask> casks) {

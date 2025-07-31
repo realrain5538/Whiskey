@@ -15,6 +15,7 @@ public record WhiskeyRegisterValue(
     @NotNull @Positive int age,
     @NotNull MaltType maltType,
     @NotNull @Min(0) @Max(100) double abv,
+    @NotNull @Min(0) int volume,
     @NotBlank String description,
     List<CaskRegisterValue> casks) {
 
