@@ -39,13 +39,12 @@ public class AdminWhiskeyService {
             .description(whiskeyDto.description())
             .build();
 
-        List<Cask> casks = new ArrayList<>();
-        List<CaskRegisterDto> caskValue = whiskeyDto.casks() != null ? whiskeyDto.casks() : Collections.emptyList();
-        for(CaskRegisterDto caskDto : caskValue) {
-            Cask cask = new Cask();
-            cask.setType(caskDto.caskType());
-            casks.add(cask);
-        }
+        List<Cask> casks = whiskeyDto.casks().stream()
+                .map(caskDto -> {
+                    Cask cask = new Cask();
+                    cask.setType(caskDto.type());
+                    return cask;
+                }).toList();
 
         whiskey.addCasks(casks);
         whiskeyRepository.save(whiskey);
@@ -74,16 +73,15 @@ public class AdminWhiskeyService {
         whiskey.setVolume(whiskeyDto.volume());
         whiskey.setDescription(whiskeyDto.description());
 
-        List<CaskRegisterDto> casks = whiskeyDto.casks() != null ? whiskeyDto.casks() : Collections.emptyList();
-        if(!casks.isEmpty()) {
-            whiskey.getCasks().clear();
-
-            for(CaskRegisterDto caskDto : casks) {
+        whiskey.getCasks().clear();
+        List<Cask> newCasks = whiskeyDto.casks().stream()
+            .map(CaskDto -> {
                 Cask cask = new Cask();
-                cask.setType(caskDto.caskType());
-                whiskey.getCasks().add(cask);
-            }
-        }
+                cask.setType(CaskDto.type());
+                return cask;
+            }).toList();
+
+        whiskey.getCasks().addAll(newCasks);
     }
 
     @Transactional

@@ -2,16 +2,21 @@ package com.whiskey.admin.whiskey.repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.whiskey.admin.whiskey.dto.CaskRegisterDto;
 import com.whiskey.admin.whiskey.dto.WhiskeyRegisterDto;
 import com.whiskey.admin.whiskey.dto.WhiskeySearchDto;
+import com.whiskey.domain.whiskey.QCask;
 import com.whiskey.domain.whiskey.QWhiskey;
 import com.whiskey.domain.whiskey.Whiskey;
+import com.whiskey.domain.whiskey.enums.CaskType;
 import com.whiskey.domain.whiskey.enums.MaltType;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 @Repository
+@Slf4j
 public class AdminWhiskeyRepositoryImpl implements AdminWhiskeyRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
@@ -38,9 +43,15 @@ public class AdminWhiskeyRepositoryImpl implements AdminWhiskeyRepositoryCustom 
     @Override
     public int checkDuplicateWhiskey(WhiskeyRegisterDto whiskeyDto) {
         QWhiskey whiskey = QWhiskey.whiskey;
+        QCask cask = QCask.cask;
 
-        Long count = queryFactory
-            .select(whiskey.count())
+        List<CaskType> caskType = whiskeyDto.casks().stream()
+            .map(CaskRegisterDto::type)
+            .sorted()
+            .toList();
+
+        List<Long> existWhiskeyIds = queryFactory
+            .select(whiskey.id)
             .from(whiskey)
             .where(
                 distilleryContains(whiskeyDto.distillery()),
@@ -49,9 +60,26 @@ public class AdminWhiskeyRepositoryImpl implements AdminWhiskeyRepositoryCustom 
                 maltTypeEquals(whiskeyDto.maltType()),
                 abvEquals(whiskeyDto.abv()),
                 volumeEquals(whiskeyDto.volume())
-            ).fetchOne();
+            ).fetch();
 
-        return count != null ? Math.toIntExact(count) : 0;
+        if(existWhiskeyIds.isEmpty()) {
+            return 0;
+        }
+
+        boolean checkDuplicate = existWhiskeyIds.stream()
+            .anyMatch(whiskeyId -> {
+               List<CaskType> existCaskType = queryFactory
+                   .select(cask.type)
+                   .from(whiskey)
+                   .join(whiskey.casks, cask)
+                   .where(whiskey.id.eq(whiskeyId))
+                   .orderBy(cask.type.asc())
+                   .fetch();
+
+               return caskType.equals(existCaskType);
+            });
+
+        return checkDuplicate ? 1 : 0;
     }
 
     private BooleanExpression distilleryContains(String distillery) {

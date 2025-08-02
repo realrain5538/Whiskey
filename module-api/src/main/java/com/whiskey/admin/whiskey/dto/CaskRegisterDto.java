@@ -1,10 +1,10 @@
 package com.whiskey.admin.whiskey.dto;
 
 import com.whiskey.domain.whiskey.enums.CaskType;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record CaskRegisterDto(
-    @NotBlank
-    CaskType caskType) {
+    @NotNull
+    CaskType type) {
 
 }
