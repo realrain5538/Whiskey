@@ -23,26 +23,26 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Whiskey extends BaseEntity {
-    @Column
+    @Column(nullable = false)
     private String distillery;
 
-    @Column
+    @Column(nullable = false)
     private String name;
 
-    @Column
+    @Column(nullable = false)
     private String country;
 
     @Column
-    private int age;
+    private Integer age;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private MaltType maltType;
 
-    @Column
+    @Column(nullable = false)
     private double abv;
 
-    @Column
+    @Column(nullable = false)
     private int volume;
 
     @Column
@@ -56,7 +56,7 @@ public class Whiskey extends BaseEntity {
     private List<Cask> casks = new ArrayList<>();
 
     @Builder
-    public Whiskey(String distillery, String name, String country, int age, int volume, MaltType maltType, double abv, String description) {
+    public Whiskey(String distillery, String name, String country, Integer age, int volume, MaltType maltType, double abv, String description) {
         this.distillery = distillery;
         this.name = name;
         this.country = country;

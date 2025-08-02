@@ -52,7 +52,7 @@ public class AdminWhiskeyService {
     }
 
     private void checkDuplicate(WhiskeyRegisterDto whiskeyDto) {
-        int count = whiskeyRepository.checkDuplicateWhiskey(whiskeyDto.distillery(), whiskeyDto.name(), whiskeyDto.age(), whiskeyDto.maltType(), whiskeyDto.abv(), whiskeyDto.volume());
+        int count = whiskeyRepository.checkDuplicateWhiskey(whiskeyDto);
 
         if(count > 0) {
             throw ErrorCode.CONFLICT.exception("이미 등록된 위스키입니다.");

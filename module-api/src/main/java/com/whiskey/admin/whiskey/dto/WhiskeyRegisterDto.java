@@ -12,7 +12,7 @@ public record WhiskeyRegisterDto(
     @NotBlank String distillery,
     @NotBlank String name,
     @NotBlank String country,
-    @NotNull @Positive int age,
+    Integer age,
     @NotNull MaltType maltType,
     @NotNull @Min(0) @Max(100) double abv,
     @NotNull @Min(0) int volume,

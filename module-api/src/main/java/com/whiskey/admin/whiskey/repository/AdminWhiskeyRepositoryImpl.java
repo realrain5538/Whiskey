@@ -2,6 +2,7 @@ package com.whiskey.admin.whiskey.repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.whiskey.admin.whiskey.dto.WhiskeyRegisterDto;
 import com.whiskey.admin.whiskey.dto.WhiskeySearchDto;
 import com.whiskey.domain.whiskey.QWhiskey;
 import com.whiskey.domain.whiskey.Whiskey;
@@ -34,6 +35,25 @@ public class AdminWhiskeyRepositoryImpl implements AdminWhiskeyRepositoryCustom 
             ).fetch();
     }
 
+    @Override
+    public int checkDuplicateWhiskey(WhiskeyRegisterDto whiskeyDto) {
+        QWhiskey whiskey = QWhiskey.whiskey;
+
+        Long count = queryFactory
+            .select(whiskey.count())
+            .from(whiskey)
+            .where(
+                distilleryContains(whiskeyDto.distillery()),
+                nameContains(whiskeyDto.name()),
+                ageEquals(whiskeyDto.age()),
+                maltTypeEquals(whiskeyDto.maltType()),
+                abvEquals(whiskeyDto.abv()),
+                volumeEquals(whiskeyDto.volume())
+            ).fetchOne();
+
+        return count != null ? Math.toIntExact(count) : 0;
+    }
+
     private BooleanExpression distilleryContains(String distillery) {
         return StringUtils.hasText(distillery) ? QWhiskey.whiskey.distillery.containsIgnoreCase(distillery) : null;
     }
@@ -52,6 +72,10 @@ public class AdminWhiskeyRepositoryImpl implements AdminWhiskeyRepositoryCustom 
 
     private BooleanExpression maltTypeEquals(Enum<?> maltType) {
         return maltType != null ? QWhiskey.whiskey.maltType.eq((MaltType) maltType) : null;
+    }
+
+    private BooleanExpression abvEquals(Double abv) {
+        return abv != null ? QWhiskey.whiskey.abv.eq(abv) : null;
     }
 
     private BooleanExpression volumeEquals(Integer volume) {

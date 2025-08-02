@@ -7,7 +7,8 @@ public enum CaskType {
     SHERRY("SHERRY"),
     PORT("PORT"),
     BOURBON("BOURBON"),
-    RUM("RUM");
+    RUM("RUM"),
+    MIZUNARA("MIZUNARA"),;
 
     private final String value;
 
