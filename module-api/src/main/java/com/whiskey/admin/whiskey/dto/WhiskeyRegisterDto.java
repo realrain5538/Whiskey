@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import java.util.List;
 
-public record WhiskeyRegisterValue(
+public record WhiskeyRegisterDto(
     @NotBlank String distillery,
     @NotBlank String name,
     @NotBlank String country,
@@ -17,6 +17,6 @@ public record WhiskeyRegisterValue(
     @NotNull @Min(0) @Max(100) double abv,
     @NotNull @Min(0) int volume,
     @NotBlank String description,
-    List<CaskRegisterValue> casks) {
+    List<CaskRegisterDto> casks) {
 
 }

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public record WhiskeyResponse(
+public record WhiskeyResponseDto(
     String distillery,
     String name,
     String country,
@@ -17,14 +17,14 @@ public record WhiskeyResponse(
     String imagePath,
     List<String> casks
 ) {
-    public static WhiskeyResponse from(Whiskey whiskey) {
+    public static WhiskeyResponseDto from(Whiskey whiskey) {
         List<String> cask = whiskey.getCasks()
             .stream()
             .filter(caskInfo -> caskInfo.getType() != null)
             .map(caskInfo -> caskInfo.getType().name())
             .collect(Collectors.toList());
 
-        return new WhiskeyResponse(
+        return new WhiskeyResponseDto(
             whiskey.getDistillery(),
             whiskey.getName(),
             whiskey.getCountry(),
@@ -37,11 +37,11 @@ public record WhiskeyResponse(
         );
     }
 
-    public static List<WhiskeyResponse> from(List<Whiskey> whiskeys) {
-        List<WhiskeyResponse> responses = new ArrayList<>();
+    public static List<WhiskeyResponseDto> from(List<Whiskey> whiskeys) {
+        List<WhiskeyResponseDto> responses = new ArrayList<>();
 
         for(Whiskey whiskey : whiskeys) {
-            WhiskeyResponse response = from(whiskey);
+            WhiskeyResponseDto response = from(whiskey);
             responses.add(response);
         }
 

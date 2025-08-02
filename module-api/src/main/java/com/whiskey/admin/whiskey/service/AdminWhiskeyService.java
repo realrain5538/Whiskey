@@ -1,9 +1,9 @@
 package com.whiskey.admin.whiskey.service;
 
-import com.whiskey.admin.whiskey.dto.CaskRegisterValue;
-import com.whiskey.admin.whiskey.dto.WhiskeyRegisterValue;
-import com.whiskey.admin.whiskey.dto.WhiskeyResponse;
-import com.whiskey.admin.whiskey.dto.WhiskeySearchValue;
+import com.whiskey.admin.whiskey.dto.CaskRegisterDto;
+import com.whiskey.admin.whiskey.dto.WhiskeyRegisterDto;
+import com.whiskey.admin.whiskey.dto.WhiskeyResponseDto;
+import com.whiskey.admin.whiskey.dto.WhiskeySearchDto;
 import com.whiskey.admin.whiskey.repository.AdminWhiskeyRepository;
 import com.whiskey.domain.whiskey.Cask;
 import com.whiskey.domain.whiskey.Whiskey;
@@ -25,7 +25,7 @@ public class AdminWhiskeyService {
     private final AdminWhiskeyRepository whiskeyRepository;
 
     @Transactional
-    public void register(WhiskeyRegisterValue whiskeyDto) {
+    public void register(WhiskeyRegisterDto whiskeyDto) {
         checkDuplicate(whiskeyDto);
 
         Whiskey whiskey = Whiskey.builder()
@@ -40,8 +40,8 @@ public class AdminWhiskeyService {
             .build();
 
         List<Cask> casks = new ArrayList<>();
-        List<CaskRegisterValue> caskValue = whiskeyDto.casks() != null ? whiskeyDto.casks() : Collections.emptyList();
-        for(CaskRegisterValue caskDto : caskValue) {
+        List<CaskRegisterDto> caskValue = whiskeyDto.casks() != null ? whiskeyDto.casks() : Collections.emptyList();
+        for(CaskRegisterDto caskDto : caskValue) {
             Cask cask = new Cask();
             cask.setType(caskDto.caskType());
             casks.add(cask);
@@ -51,7 +51,7 @@ public class AdminWhiskeyService {
         whiskeyRepository.save(whiskey);
     }
 
-    private void checkDuplicate(WhiskeyRegisterValue whiskeyDto) {
+    private void checkDuplicate(WhiskeyRegisterDto whiskeyDto) {
         int count = whiskeyRepository.checkDuplicateWhiskey(whiskeyDto.distillery(), whiskeyDto.name(), whiskeyDto.age(), whiskeyDto.maltType(), whiskeyDto.abv(), whiskeyDto.volume());
 
         if(count > 0) {
@@ -60,7 +60,7 @@ public class AdminWhiskeyService {
     }
 
     @Transactional
-    public void update(Long id, @Valid WhiskeyRegisterValue whiskeyDto) {
+    public void update(Long id, @Valid WhiskeyRegisterDto whiskeyDto) {
         checkDuplicate(whiskeyDto);
 
         Whiskey whiskey = whiskeyRepository.findById(id).orElseThrow(() -> ErrorCode.NOT_FOUND.exception("위스키를 찾을 수 없습니다."));
@@ -74,11 +74,11 @@ public class AdminWhiskeyService {
         whiskey.setVolume(whiskeyDto.volume());
         whiskey.setDescription(whiskeyDto.description());
 
-        List<CaskRegisterValue> casks = whiskeyDto.casks() != null ? whiskeyDto.casks() : Collections.emptyList();
+        List<CaskRegisterDto> casks = whiskeyDto.casks() != null ? whiskeyDto.casks() : Collections.emptyList();
         if(!casks.isEmpty()) {
             whiskey.getCasks().clear();
 
-            for(CaskRegisterValue caskDto : casks) {
+            for(CaskRegisterDto caskDto : casks) {
                 Cask cask = new Cask();
                 cask.setType(caskDto.caskType());
                 whiskey.getCasks().add(cask);
@@ -95,13 +95,13 @@ public class AdminWhiskeyService {
         whiskeyRepository.deleteById(id);
     }
 
-    public WhiskeyResponse findById(Long id) {
+    public WhiskeyResponseDto findById(Long id) {
         Whiskey whiskey = whiskeyRepository.findById(id).orElseThrow(() -> ErrorCode.NOT_FOUND.exception("위스키를 찾을 수 없습니다."));
-        return WhiskeyResponse.from(whiskey);
+        return WhiskeyResponseDto.from(whiskey);
     }
 
-    public List<WhiskeyResponse> searchWhiskeys(@Valid WhiskeySearchValue whiskeyDto) {
+    public List<WhiskeyResponseDto> searchWhiskeys(@Valid WhiskeySearchDto whiskeyDto) {
         List<Whiskey> whiskeys = whiskeyRepository.searchWhiskeys(whiskeyDto);
-        return WhiskeyResponse.from(whiskeys);
+        return WhiskeyResponseDto.from(whiskeys);
     }
 }

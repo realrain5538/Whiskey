@@ -2,7 +2,7 @@ package com.whiskey.admin.whiskey.repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.whiskey.admin.whiskey.dto.WhiskeySearchValue;
+import com.whiskey.admin.whiskey.dto.WhiskeySearchDto;
 import com.whiskey.domain.whiskey.QWhiskey;
 import com.whiskey.domain.whiskey.Whiskey;
 import com.whiskey.domain.whiskey.enums.MaltType;
@@ -20,7 +20,7 @@ public class AdminWhiskeyRepositoryImpl implements AdminWhiskeyRepositoryCustom 
     }
 
     @Override
-    public List<Whiskey> searchWhiskeys(WhiskeySearchValue whiskeyDto) {
+    public List<Whiskey> searchWhiskeys(WhiskeySearchDto whiskeyDto) {
         QWhiskey whiskey = QWhiskey.whiskey;
         return queryFactory
             .selectFrom(whiskey)

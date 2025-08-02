@@ -2,7 +2,7 @@ package com.whiskey.admin.whiskey.dto;
 
 import com.whiskey.domain.whiskey.enums.MaltType;
 
-public record WhiskeySearchValue(
+public record WhiskeySearchDto(
     String distillery,
     String name,
     String country,
