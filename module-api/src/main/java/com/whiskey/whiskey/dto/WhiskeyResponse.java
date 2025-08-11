@@ -4,7 +4,7 @@ import com.whiskey.domain.whiskey.dto.WhiskeyInfo;
 import com.whiskey.domain.whiskey.enums.MaltType;
 import java.util.List;
 
-public record WhiskeyResponseDto(
+public record WhiskeyResponse(
     long id,
     String distillery,
     String name,
@@ -16,8 +16,8 @@ public record WhiskeyResponseDto(
     String imagePath,
     List<String> casks
 ) {
-    public static WhiskeyResponseDto from(WhiskeyInfo whiskeyInfo) {
-        return new WhiskeyResponseDto(
+    public static WhiskeyResponse from(WhiskeyInfo whiskeyInfo) {
+        return new WhiskeyResponse(
             whiskeyInfo.id(),
             whiskeyInfo.distillery(),
             whiskeyInfo.name(),
@@ -31,9 +31,9 @@ public record WhiskeyResponseDto(
         );
     }
 
-    public static List<WhiskeyResponseDto> from(List<WhiskeyInfo> whiskeys) {
+    public static List<WhiskeyResponse> from(List<WhiskeyInfo> whiskeys) {
         return whiskeys.stream()
-            .map(WhiskeyResponseDto::from)
+            .map(WhiskeyResponse::from)
             .toList();
     }
 }

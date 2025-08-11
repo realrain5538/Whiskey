@@ -1,7 +1,7 @@
 package com.whiskey.member.controller;
 
 import com.whiskey.domain.member.dto.MemberInfo;
-import com.whiskey.member.dto.MemberRegisterValue;
+import com.whiskey.member.dto.MemberRegisterRequest;
 import com.whiskey.member.dto.MemberResponse;
 import com.whiskey.domain.member.service.MemberService;
 import com.whiskey.response.ApiResponse;
@@ -24,7 +24,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/members")
-    public ApiResponse<Void> signup(@Valid @RequestBody MemberRegisterValue memberDto) {
+    public ApiResponse<Void> signup(@Valid @RequestBody MemberRegisterRequest memberDto) {
         memberService.signup(memberDto.email(), memberDto.password(), memberDto.memberName());
         return ApiResponse.success("회원가입이 완료되었습니다.");
     }

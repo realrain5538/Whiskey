@@ -1,10 +1,9 @@
 package com.whiskey.domain.whiskey.dto;
 
-import com.whiskey.domain.whiskey.enums.CaskType;
 import com.whiskey.domain.whiskey.enums.MaltType;
 import java.util.List;
 
-public record WhiskeyRegisterCommand(
+public record WhiskeyCommand(
     String distillery,
     String name,
     String country,
@@ -13,5 +12,5 @@ public record WhiskeyRegisterCommand(
     double abv,
     int volume,
     String description,
-    List<CaskRegisterCommand> casks
+    List<CaskCommand> casks
 ) {}

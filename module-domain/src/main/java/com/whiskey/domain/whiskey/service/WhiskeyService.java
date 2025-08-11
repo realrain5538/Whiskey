@@ -1,8 +1,8 @@
 package com.whiskey.domain.whiskey.service;
 
 import com.whiskey.domain.whiskey.dto.WhiskeyInfo;
-import com.whiskey.domain.whiskey.dto.WhiskeyRegisterCommand;
-import com.whiskey.domain.whiskey.dto.WhiskeySearchCommand;
+import com.whiskey.domain.whiskey.dto.WhiskeyCommand;
+import com.whiskey.domain.whiskey.dto.WhiskeySearchCondition;
 import com.whiskey.domain.whiskey.repository.WhiskeyRepository;
 import com.whiskey.domain.whiskey.Cask;
 import com.whiskey.domain.whiskey.Whiskey;
@@ -22,7 +22,7 @@ public class WhiskeyService {
     private final WhiskeyRepository whiskeyRepository;
 
     @Transactional
-    public void register(WhiskeyRegisterCommand whiskeyDto) {
+    public void register(WhiskeyCommand whiskeyDto) {
         checkDuplicate(whiskeyDto);
 
         Whiskey whiskey = Whiskey.builder()
@@ -47,7 +47,7 @@ public class WhiskeyService {
         whiskeyRepository.save(whiskey);
     }
 
-    private void checkDuplicate(WhiskeyRegisterCommand whiskeyDto) {
+    private void checkDuplicate(WhiskeyCommand whiskeyDto) {
         int count = whiskeyRepository.checkDuplicateWhiskey(whiskeyDto);
 
         if(count > 0) {
@@ -56,7 +56,7 @@ public class WhiskeyService {
     }
 
     @Transactional
-    public void update(Long id, @Valid WhiskeyRegisterCommand whiskeyDto) {
+    public void update(Long id, @Valid WhiskeyCommand whiskeyDto) {
         checkDuplicate(whiskeyDto);
 
         Whiskey whiskey = whiskeyRepository.findById(id).orElseThrow(() -> ErrorCode.NOT_FOUND.exception("위스키를 찾을 수 없습니다."));
@@ -95,7 +95,7 @@ public class WhiskeyService {
         return WhiskeyInfo.from(whiskey);
     }
 
-    public List<WhiskeyInfo> searchWhiskeys(@Valid WhiskeySearchCommand whiskeyDto) {
+    public List<WhiskeyInfo> searchWhiskeys(@Valid WhiskeySearchCondition whiskeyDto) {
         List<Whiskey> whiskeys = whiskeyRepository.searchWhiskeys(whiskeyDto);
         return whiskeys.stream()
             .map(WhiskeyInfo::from)

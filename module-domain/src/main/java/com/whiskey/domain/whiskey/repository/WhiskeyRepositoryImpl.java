@@ -5,9 +5,9 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.whiskey.domain.whiskey.QCask;
 import com.whiskey.domain.whiskey.QWhiskey;
 import com.whiskey.domain.whiskey.Whiskey;
-import com.whiskey.domain.whiskey.dto.CaskRegisterCommand;
-import com.whiskey.domain.whiskey.dto.WhiskeyRegisterCommand;
-import com.whiskey.domain.whiskey.dto.WhiskeySearchCommand;
+import com.whiskey.domain.whiskey.dto.CaskCommand;
+import com.whiskey.domain.whiskey.dto.WhiskeyCommand;
+import com.whiskey.domain.whiskey.dto.WhiskeySearchCondition;
 import com.whiskey.domain.whiskey.enums.CaskType;
 import com.whiskey.domain.whiskey.enums.MaltType;
 import java.util.List;
@@ -26,7 +26,7 @@ public class WhiskeyRepositoryImpl implements WhiskeyRepositoryCustom {
     }
 
     @Override
-    public List<Whiskey> searchWhiskeys(WhiskeySearchCommand whiskeyDto) {
+    public List<Whiskey> searchWhiskeys(WhiskeySearchCondition whiskeyDto) {
         QWhiskey whiskey = QWhiskey.whiskey;
         return queryFactory
             .selectFrom(whiskey)
@@ -41,12 +41,12 @@ public class WhiskeyRepositoryImpl implements WhiskeyRepositoryCustom {
     }
 
     @Override
-    public int checkDuplicateWhiskey(WhiskeyRegisterCommand whiskeyDto) {
+    public int checkDuplicateWhiskey(WhiskeyCommand whiskeyDto) {
         QWhiskey whiskey = QWhiskey.whiskey;
         QCask cask = QCask.cask;
 
         List<CaskType> caskType = whiskeyDto.casks().stream()
-            .map(CaskRegisterCommand::type)
+            .map(CaskCommand::type)
             .sorted()
             .toList();
 
