@@ -1,4 +1,4 @@
-package com.whiskey.admin.whiskey.dto;
+package com.whiskey.whiskey.dto;
 
 import com.whiskey.domain.whiskey.enums.MaltType;
 import jakarta.validation.Valid;
@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
-public record WhiskeyRegisterDto(
+public record WhiskeyRegisterRequest(
     @NotBlank String distillery,
     @NotBlank String name,
     @NotBlank String country,
@@ -18,6 +18,5 @@ public record WhiskeyRegisterDto(
     @NotNull @Min(0) @Max(100) double abv,
     @NotNull @Min(0) int volume,
     @NotBlank String description,
-    @NotEmpty @Valid List<CaskRegisterDto> casks) {
-
-}
+    @NotEmpty @Valid List<CaskRegisterRequest> casks
+) {}
