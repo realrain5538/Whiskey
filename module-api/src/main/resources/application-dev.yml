@@ -20,3 +20,4 @@ jwt:
   secret-key: 0VFd9UZwXwLVaX40nCLLGuqyx6tcWzGz+KGHpDz9G+xTVOfNLlqbh4YqfKbzzKDQl94OCqP1MLm6dNuLJdY8qg==
   access-token-validity: 600000  # 10분
   refresh-token-validity: 604800000  # 7일
+  enabled: false
