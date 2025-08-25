@@ -31,6 +31,10 @@ resource "aws_api_gateway_rest_api" "api" {
 resource "aws_api_gateway_domain_name" "custom_domain" {
   domain_name              = var.api_gateway_domain_name
   certificate_arn          = var.api_gateway_acm_certificate_arn
+
+  endpoint_configuration {
+    types = ["REGIONAL"]
+  }
 }
 
 # 기본 경로 매핑
