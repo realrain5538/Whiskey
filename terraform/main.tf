@@ -23,17 +23,18 @@ module "vpc" {
   tags                         = local.common_tags
   project_name                 = var.project_name
   vpc_endpoint_subnet_ids      = var.vpc_endpoint_subnet_ids
-  vpc_endpoint_security_group_ids = var.vpc_endpoint_security_group_ids
+  # vpc_endpoint_security_group_ids = var.vpc_endpoint_security_group_ids
   ecr_api_endpoint_service_name = var.ecr_api_endpoint_service_name
   ecr_dkr_endpoint_service_name = var.ecr_dkr_endpoint_service_name
+  prefix_list_id = var.prefix_list_id
 }
 
 module "network" {
   source = "./modules/network"
 
-  availability_zones = [var.availability_zones]
+  # availability_zones = [var.availability_zones]
   environment    = var.environment
-  prefix_list_id = var.prefix_list_id
+  prefix_list_id = module.vpc.prefix_list_id
   private_subnets = var.private_subnets
   project_name   = var.project_name
   s3_gateway_id  = var.s3_gateway_id
@@ -107,7 +108,7 @@ module "ecs_fargate" {
   # 다른 모듈의 출력값과 변수 전달
   vpc_id                = module.vpc.vpc_id
   private_subnets       = var.private_subnets
-  security_group_ids    = module.vpc.security_group_ids
+  # security_group_ids    = module.vpc.security_group_ids
   ecr_repository_name   = var.ecr_repository_name
   image_tag             = var.image_tag
   image_count_to_retain = var.image_count_to_retain

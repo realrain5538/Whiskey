@@ -1,8 +1,8 @@
 resource "aws_subnet" "private" {
   for_each                = var.private_subnets
   vpc_id                  = var.vpc_id
-  cidr_block              = each.value
-  availability_zone       = each.key
+  cidr_block              = each.value.cidr
+  availability_zone       = each.value.az_name
   tags = {
     Name = "${var.project_name}-${var.environment}-private-subnet-${each.key}"
   }
@@ -11,8 +11,8 @@ resource "aws_subnet" "private" {
 resource "aws_subnet" "public" {
   for_each                = var.public_subnets
   vpc_id                  = var.vpc_id
-  cidr_block              = each.value
-  availability_zone       = each.key
+  cidr_block              = each.value.cidr
+  availability_zone       = each.value.az_name
   map_public_ip_on_launch = true
   tags = {
     Name = "${var.project_name}-${var.environment}-public-subnet-${each.key}"
@@ -32,28 +32,27 @@ resource "aws_route_table" "public" {
 }
 
 resource "aws_route_table" "private" {
-  count  = length(var.availability_zones)
   vpc_id = var.vpc_id
   tags = {
-    Name = "${var.project_name}-${var.environment}-private-rt-${var.availability_zones[count.index]}"
+    Name = "${var.project_name}-${var.environment}-private-rt"
   }
 }
 
 resource "aws_route_table_association" "public" {
   for_each = aws_subnet.public
   subnet_id      = each.value.id
-  route_table_id = aws_route_table.public[index(var.availability_zones, each.value.availability_zone)].id
+  route_table_id = aws_route_table.public.id
 }
 
 resource "aws_route_table_association" "private" {
   for_each = aws_subnet.private
   subnet_id      = each.value.id
-  route_table_id = aws_route_table.private[index(var.availability_zones, each.value.availability_zone)].id
+  route_table_id = aws_route_table.private.id
 }
 
 resource "aws_route" "s3_endpoint_route" {
-  count                  = length(aws_route_table.private)
-  route_table_id         = aws_route_table.private[count.index].id
+  # count                  = length(aws_route_table.private)
+  route_table_id         = aws_route_table.private.id
   destination_cidr_block = var.prefix_list_id
   vpc_endpoint_id        = var.s3_gateway_id
 }

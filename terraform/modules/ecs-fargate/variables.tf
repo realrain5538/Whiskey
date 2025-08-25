@@ -16,9 +16,9 @@ variable "public_subnets" {
   }))
 }
 
-variable "security_group_ids" {
-  type        = list(string)
-}
+# variable "security_group_ids" {
+#   type        = list(string)
+# }
 
 variable "ecr_repository_name" {
   type        = string

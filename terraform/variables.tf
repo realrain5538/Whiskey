@@ -100,10 +100,10 @@ variable "availability_zones" {
   default     = ["ap-northeast-2a", "ap-northeast-2c"]
 }
 
-variable "vpc_endpoint_security_group_ids" {
-  description = "A list of security group IDs for the VPC Endpoints."
-  type        = list(string)
-}
+# variable "vpc_endpoint_security_group_ids" {
+#   description = "A list of security group IDs for the VPC Endpoints."
+#   type        = list(string)
+# }
 
 variable "prefix_list_id" {
   description = "VPC s3 Endpoint prefix_list_id"
@@ -257,10 +257,10 @@ variable "environment_variables" {
   default     = {}
 }
 
-variable "security_group_ids" {
-  description = "The list of security group IDs for Fargate tasks"
-  type        = list(string)
-}
+# variable "security_group_ids" {
+#   description = "The list of security group IDs for Fargate tasks"
+#   type        = list(string)
+# }
 
 # target group
 variable "target_group_name" {

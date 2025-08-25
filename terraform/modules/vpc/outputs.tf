@@ -10,7 +10,7 @@ output "private_subnets" {
 
 output "security_group_ids" {
   description = "VPC Endpoint용으로 사용된 보안 그룹 ID 목록입니다."
-  value       = var.vpc_endpoint_security_group_ids
+  value       = aws_security_group.vpc_endpoint.id
 }
 
 output "prefix_list_id" {
