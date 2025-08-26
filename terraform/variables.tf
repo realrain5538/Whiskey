@@ -152,6 +152,10 @@ variable "subdomain_name" {
   default = "whiskey"
 }
 
+variable "api_gateway_subdomain_name" {
+  default = "api.whiskey"
+}
+
 # cognito
 variable "cognito_user_pool_name" {
   description = "The name for the Cognito User Pool."
@@ -292,7 +296,7 @@ variable "alb_ssl_certificate_arn" {
 # DynamoDB
 variable "dynamodb_table_name" {
   description = "The name for the DynamoDB table."
-  default     = "my-app-session-table"
+  default     = "i-love-whiskey-table"
 }
 
 variable "dynamodb_partition_key" {

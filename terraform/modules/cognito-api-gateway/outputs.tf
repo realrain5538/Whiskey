@@ -8,7 +8,7 @@ output "cognito_app_client_id" {
   value       = aws_cognito_user_pool_client.client.id
 }
 
-output "api_gateway_rest_api_id" {
-  description = "API Gateway REST API의 ID입니다."
-  value       = aws_api_gateway_rest_api.api.id
-}
+# output "api_gateway_rest_api_id" {
+#   description = "API Gateway REST API의 ID입니다."
+#   value       = aws_api_gateway_rest_api.api.id
+# }

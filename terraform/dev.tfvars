@@ -33,7 +33,7 @@ cognito_logout_urls   = ["https://whiskey.nextcloudlab.com/logout"]
 
 # API Gateway (기본값 사용)
 # api_gateway_domain_name         = "api.whiskey.nextcloudlab.com"
-api_gateway_acm_certificate_arn = "arn:aws:acm:ap-northeast-2:077672914621:certificate/59c563eb-95dd-41ff-bd65-ec52b9271c22"
+api_gateway_acm_certificate_arn = "arn:aws:acm:ap-northeast-2:077672914621:certificate/ac0d8ecc-1cac-471e-8418-4ef8755363a3"
 
 # ECR (기본값 사용)
 # ecr_repository_name = "i-love-whiskey"

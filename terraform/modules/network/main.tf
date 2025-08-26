@@ -32,9 +32,10 @@ resource "aws_route_table" "public" {
 }
 
 resource "aws_route_table" "private" {
+  for_each = aws_subnet.private
   vpc_id = var.vpc_id
   tags = {
-    Name = "${var.project_name}-${var.environment}-private-rt"
+    Name = "${var.project_name}-${var.environment}-private-rt-${each.key}"
   }
 }
 
@@ -47,12 +48,13 @@ resource "aws_route_table_association" "public" {
 resource "aws_route_table_association" "private" {
   for_each = aws_subnet.private
   subnet_id      = each.value.id
-  route_table_id = aws_route_table.private.id
+  route_table_id = aws_route_table.private[each.key].id
 }
 
 resource "aws_route" "s3_endpoint_route" {
   # count                  = length(aws_route_table.private)
-  route_table_id         = aws_route_table.private.id
-  destination_cidr_block = var.prefix_list_id
-  vpc_endpoint_id        = var.s3_gateway_id
+  for_each = aws_route_table.private
+  route_table_id              = each.value.id
+  destination_prefix_list_id  = var.prefix_list_id
+  vpc_endpoint_id             = var.s3_gateway_id
 }

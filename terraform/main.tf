@@ -26,7 +26,8 @@ module "vpc" {
   # vpc_endpoint_security_group_ids = var.vpc_endpoint_security_group_ids
   ecr_api_endpoint_service_name = var.ecr_api_endpoint_service_name
   ecr_dkr_endpoint_service_name = var.ecr_dkr_endpoint_service_name
-  prefix_list_id = var.prefix_list_id
+  prefix_list_id                = var.prefix_list_id
+  s3_gateway_id                 = var.s3_gateway_id
 }
 
 module "network" {
@@ -37,9 +38,9 @@ module "network" {
   prefix_list_id = module.vpc.prefix_list_id
   private_subnets = var.private_subnets
   project_name   = var.project_name
-  s3_gateway_id  = var.s3_gateway_id
+  s3_gateway_id  = module.vpc.s3_gateway_id
   tags = local.common_tags
-  vpc_id         = var.vpc_id
+  vpc_id         = module.vpc.vpc_id
   aws_internet_gateway_id = ""
   public_subnets = var.public_subnets
 }
@@ -74,6 +75,8 @@ module "cognito_api_gateway" {
   api_gateway_domain_name         = var.api_gateway_domain_name
   api_gateway_acm_certificate_arn = var.api_gateway_acm_certificate_arn
   tags                            = local.common_tags
+  api_gateway_subdomain_name      = var.api_gateway_subdomain_name
+  domain_name                     = var.domain_name
 }
 
 # DynamoDB 모듈 호출

@@ -37,3 +37,11 @@ variable "api_gateway_acm_certificate_arn" {
 variable "tags" {
   type        = map(string)
 }
+
+variable "domain_name" {
+  type        = string
+}
+
+variable "api_gateway_subdomain_name" {
+  type        = string
+}

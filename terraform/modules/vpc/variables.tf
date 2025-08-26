@@ -25,3 +25,8 @@ variable "ecr_dkr_endpoint_service_name" {}
 variable "prefix_list_id" {
   type = string
 }
+
+variable "s3_gateway_id" {
+  description = "VPC s3 Endpoint id"
+  type = string
+}
